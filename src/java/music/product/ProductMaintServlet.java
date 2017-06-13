@@ -1,5 +1,4 @@
 package music.product;
-
 import music.data.ProductIO;
 import music.business.Product;
 import java.io.*;
@@ -33,6 +32,8 @@ public class ProductMaintServlet extends HttpServlet {
             url = updateProduct(request, response);
         } else if (action.equals("deleteProduct")) {
             url = deleteProduct(request, response);
+        }else if (action.equals("confirmProduct")) {
+            url = confirmProduct(request, response);
         }
 
         sc.getRequestDispatcher(url)
@@ -69,13 +70,14 @@ public class ProductMaintServlet extends HttpServlet {
             product.setCode(productCode);
             product.setDescription(ProductIO.selectProduct(productCode).getDescription());
             product.setPrice(ProductIO.selectProduct(productCode).getPrice());
-
+            ProductDB.updateProduct(product);
             session.setAttribute("product", product);
          }
          else {
              session.removeAttribute("product");
          }
          
+ 
         return "/product.jsp";
      }
     
@@ -101,9 +103,57 @@ public class ProductMaintServlet extends HttpServlet {
         
         return "/displayProducts.jsp";
     }
+   
+    public String deleteProduct(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+          
+        // get the product data
+         String productCode = request.getParameter("productCode");
 
-    private String deleteProduct(HttpServletRequest request, HttpServletResponse response)
-      {
-          return null;
-      }
+         HttpSession session = request.getSession();
+
+         if(ProductIO.exists(productCode) && productCode!= null) {
+//              store the data in a Product object
+            Product product = new Product();
+            product.setCode(productCode);
+            product.setDescription(ProductIO.selectProduct(productCode).getDescription());
+            product.setPrice(ProductIO.selectProduct(productCode).getPrice());
+            
+            
+            ProductDB.deleteProduct(product);
+        
+        List<Product> products = ProductIO.selectProducts();
+        session.setAttribute("products", products);
+
+            session.removeAttribute("product");
+         }
+         
+         
+        return "/displayProducts.jsp";
+    }
+        
+        public String confirmProduct(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+          
+        // get the product data
+         String productCode = request.getParameter("productCode");
+
+         HttpSession session = request.getSession();
+
+         if(ProductIO.exists(productCode) && productCode!= null) {
+//              store the data in a Product object
+            Product product = new Product();
+            product.setCode(productCode);
+            product.setDescription(ProductIO.selectProduct(productCode).getDescription());
+            product.setPrice(ProductIO.selectProduct(productCode).getPrice());
+
+            session.setAttribute("product", product);
+         }
+         else {
+             session.removeAttribute("product");
+         }
+         
+        return "/confirm.jsp";
+        
+     }
 }

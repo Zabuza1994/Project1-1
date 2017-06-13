@@ -26,7 +26,7 @@
                     <td class="right">
                         <p><a href="ProductMaint?action=addProduct&productCode=${product.code}"  >Edit</a></p>
                     </td>
-                    <td class="right"><input type="button" value="Delete"></td>
+                    <td class="right"><a href="ProductMaint?action=confirmProduct&productCode=${product.code}"  >Delete</a></td>
                 </tr>
             </c:forEach>
         </table>
