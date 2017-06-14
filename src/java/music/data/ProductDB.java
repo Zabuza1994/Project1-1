@@ -1,5 +1,3 @@
-
-
 package music.data;
 
 /**
@@ -13,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import music.data.ProductIO;
 import music.business.Product;
 
 public class ProductDB {
@@ -129,6 +126,54 @@ public class ProductDB {
             return null;
         } finally {
             DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+    
+    public static void insert(Product product) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        
+        String query
+                = "INSERT INTO product (ProductID, ProductCode, ProductDescription, ProductPrice) "
+                + "VALUES (?, ?, ?, ?)";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, Long.toString(product.getId()));
+            ps.setString(2, product.getCode());
+            ps.setString(3, product.getDescription());
+            ps.setString(4, Double.toString(product.getPrice()));
+            
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+        
+        
+    }
+    
+    public static void remove(Product product) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        
+        String query
+                = "REMOVE FROM "
+                + "WHERE ProductID = '?' and ProductCode = 'ProductCode'";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, Long.toString(product.getId()));
+            ps.setString(2, product.getCode());
+            
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
             DBUtil.closePreparedStatement(ps);
             pool.freeConnection(connection);
         }

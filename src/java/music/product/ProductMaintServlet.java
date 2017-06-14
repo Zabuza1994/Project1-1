@@ -72,12 +72,11 @@ public class ProductMaintServlet extends HttpServlet {
             product.setPrice(ProductIO.selectProduct(productCode).getPrice());
             ProductDB.updateProduct(product);
             session.setAttribute("product", product);
+            ProductDB.insert(product);
          }
          else {
              session.removeAttribute("product");
-         }
-         
- 
+         } 
         return "/product.jsp";
      }
     
