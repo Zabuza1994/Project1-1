@@ -7,7 +7,7 @@
       <link rel="stylesheet" href="styles/main.css" type="text/css"/>
   </head>
   <body>
-
+      <p><i>${message}</i></p>
     <h1>Product</h1>
     <form action="ProductMaint" method="post">
       <strong>Code: </strong>

@@ -11,7 +11,18 @@
 <p><b>Code:        ${sessionScope.product.code}</b></p>
 <p><b>Description: ${sessionScope.product.description}</b></p>
 <p><b>Price:       ${sessionScope.product.price}</b></p>
-<input type="Submit" value="Yes"><a href="ProductMaint?action=deleteProduct&productCode=${product.code}"  >Yes</a></input><input type="Submit" value="No"></input><a href="ProductMaint?action=viewProduct&productCode=${product.code}"  >No</a>
+
+<div class="buttonController">
+<form name="deleteProduct" action="ProductMaint">
+            <input type="submit" value="Yes" />
+            <input type="hidden" name="action" value="deleteProduct"/>
+            <input type="hidden" name="productCode" value="${product.code}"/>
+</form>
+<form name="goToProductView" action="ProductMaint">
+            <input type="submit" value="No" />
+            <input type="hidden" name="action" value="viewProduct" />
+</form>
+</div>
         
 </body>
 </html>

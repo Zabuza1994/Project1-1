@@ -1,4 +1,5 @@
 package music.product;
+
 import music.data.ProductIO;
 import music.business.Product;
 import java.io.*;
@@ -70,13 +71,13 @@ public class ProductMaintServlet extends HttpServlet {
             product.setCode(productCode);
             product.setDescription(ProductIO.selectProduct(productCode).getDescription());
             product.setPrice(ProductIO.selectProduct(productCode).getPrice());
-            ProductDB.updateProduct(product);
+
             session.setAttribute("product", product);
-            ProductDB.insert(product);
          }
          else {
              session.removeAttribute("product");
-         } 
+         }
+         
         return "/product.jsp";
      }
     
@@ -102,7 +103,7 @@ public class ProductMaintServlet extends HttpServlet {
         
         return "/displayProducts.jsp";
     }
-   
+
     public String deleteProduct(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
           
@@ -118,8 +119,9 @@ public class ProductMaintServlet extends HttpServlet {
             product.setDescription(ProductIO.selectProduct(productCode).getDescription());
             product.setPrice(ProductIO.selectProduct(productCode).getPrice());
             
-            
             ProductDB.deleteProduct(product);
+            ProductDB.remove(product);
+            
         
         List<Product> products = ProductIO.selectProducts();
         session.setAttribute("products", products);
